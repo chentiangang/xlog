@@ -2,7 +2,6 @@ package xlog
 
 var logger XLog = newXLog("console", XLogLevelDebug, "", "default")
 
-// 一个对象有了这些方法才算实现了这个接口
 type XLog interface {
 	Init() error
 	LogDebug(fmt string, args ...interface{})

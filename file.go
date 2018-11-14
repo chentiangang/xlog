@@ -39,7 +39,7 @@ func NewXFile(level int, filename, module string) XLog {
 // 这个对像有了值以后，添加以下的方法来实现XLog这个接口。
 
 func (c *XFile) Init() (err error) {
-	c.file, err = os.OpenFile(c.filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0755)
+	c.file, err = os.OpenFile(c.filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return
 	}
@@ -70,7 +70,7 @@ func (c *XFile) splitLog() {
 	c.file.Close()
 
 	// 新生成的文件名
-	newFilename := fmt.Sprintf("%s-%04d-%02d-%02d", c.filename,
+	newFilename := fmt.Sprintf("%s-%04d-%02d-%02d-%02d", c.filename,
 		now.Year(), now.Month(), now.Day(), now.Hour())
 
 	// os.Rename 修改文件名
