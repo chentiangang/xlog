@@ -28,8 +28,26 @@ func newXLog(logType string, level int, filename, module string) XLog {
 	return logger
 }
 
-func Init(logType string, level int, filename, module string) error {
-	logger = newXLog(logType, level, filename, module)
+func Init(logType string, level string, filename, module string) error {
+	var l int
+	switch level {
+	case "debug":
+		l = XLogLevelDebug
+	case "trace":
+		l = XLogLevelTrace
+	case "info":
+		l = XLogLevelInfo
+	case "warn":
+		l = XLogLevelWarn
+	case "error":
+		l = XLogLevelError
+	case "fatal":
+		l = XLogLevelFatal
+	default:
+		l = XLogLevelDebug
+	}
+
+	logger = newXLog(logType, l , filename, module)
 	return logger.Init()
 }
 
