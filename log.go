@@ -1,6 +1,6 @@
 package xlog
 
-var logger XLog = newXLog("console", XLogLevelDebug, "", "default")
+var logger XLog = newXLog("console", XLogLevelDebug, "", "default",false)
 
 type XLog interface {
 	Init() error
@@ -15,20 +15,20 @@ type XLog interface {
 	SetLevel(level int)
 }
 
-func newXLog(logType string, level int, filename, module string) XLog {
+func newXLog(logType string, level int, filename, module string,split bool) XLog {
 	var logger XLog
 	switch logType {
 	case "file","File":
-		logger = NewXFile(level, filename, module)
+		logger = NewXFile(level, filename, module, split)
 	case "console","Console":
 		logger = NewXConsole(level, module)
 	default:
-		logger = NewXFile(level, filename, module)
+		logger = NewXFile(level, filename, module,split)
 	}
 	return logger
 }
 
-func Init(logType string, level string, filename, module string) error {
+func Init(logType string, level string, filename, module string,split bool) error {
 	var l int
 	switch level {
 	case "debug":
@@ -47,7 +47,7 @@ func Init(logType string, level string, filename, module string) error {
 		l = XLogLevelDebug
 	}
 
-	logger = newXLog(logType, l , filename, module)
+	logger = newXLog(logType, l , filename, module,split)
 	return logger.Init()
 }
 

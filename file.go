@@ -19,13 +19,14 @@ type XFile struct {
 }
 
 // 给文件这个对象进行赋值
-func NewXFile(level int, filename, module string) XLog {
+func NewXFile(level int, filename, module string,split bool) XLog {
 	logger := &XFile{
 		filename: filename,
 	}
 	logger.XLogBase = &XLogBase{
 		level:  level,
 		module: module,
+		split: split,
 	}
 
 	logger.curHour = time.Now().Hour()
@@ -48,7 +49,9 @@ func (c *XFile) Init() (err error) {
 
 func (c *XFile) syncLog() {
 	for data := range c.logChan {
-		c.splitLog()
+		if c.split {
+			c.splitLog()
+		}
 		c.writeLog(c.file, data)
 	}
 	c.wg.Done()

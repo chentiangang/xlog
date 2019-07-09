@@ -22,6 +22,7 @@ type LogData struct {
 type XLogBase struct {
 	level  int
 	module string
+	split bool
 }
 
 func (l *XLogBase) writeLog(file *os.File, logData *LogData) {
