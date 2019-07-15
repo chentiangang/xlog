@@ -15,21 +15,20 @@ type XFile struct {
 
 	logChan chan *LogData
 	wg      *sync.WaitGroup
-	curHour int
+	curDay int
 }
 
 // 给文件这个对象进行赋值
-func NewXFile(level int, filename, module string,split bool) XLog {
+func NewXFile(level int, filename, module string) XLog {
 	logger := &XFile{
 		filename: filename,
 	}
 	logger.XLogBase = &XLogBase{
 		level:  level,
 		module: module,
-		split: split,
 	}
 
-	logger.curHour = time.Now().Hour()
+	logger.curDay = time.Now().Day()
 	logger.wg = &sync.WaitGroup{}
 	logger.logChan = make(chan *LogData, 10000)
 	logger.wg.Add(1)
@@ -49,9 +48,7 @@ func (c *XFile) Init() (err error) {
 
 func (c *XFile) syncLog() {
 	for data := range c.logChan {
-		if c.split {
 			c.splitLog()
-		}
 		c.writeLog(c.file, data)
 	}
 	c.wg.Done()
@@ -61,11 +58,11 @@ func (c *XFile) splitLog() {
 	now := time.Now()
 
 	// 如果当前的小时等于创建文件对象时的小时时间，则返回，不进行日志切割
-	if now.Hour() == c.curHour {
+	if now.Day() == c.curDay {
 		return
 	}
 
-	c.curHour = now.Hour()
+	c.curDay = now.Day()
 	// 把文件从缓冲区同步到磁盘
 	c.file.Sync()
 
