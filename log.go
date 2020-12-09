@@ -18,9 +18,9 @@ type XLog interface {
 func newXLog(logType string, level int, filename, module string) XLog {
 	var logger XLog
 	switch logType {
-	case "file","File":
+	case "file", "File":
 		logger = NewXFile(level, filename, module)
-	case "console","Console":
+	case "console", "Console":
 		logger = NewXConsole(level, module)
 	default:
 		logger = NewXFile(level, filename, module)
@@ -47,31 +47,31 @@ func Init(logType string, level string, filename, module string) error {
 		l = XLogLevelDebug
 	}
 
-	logger = newXLog(logType, l , filename, module)
+	logger = newXLog(logType, l, filename, module)
 	return logger.Init()
 }
 
-func LogDebug(format string, args ...interface{}) {
+func Debug(format string, args ...interface{}) {
 	logger.LogDebug(format, args...)
 }
 
-func LogTrace(format string, args ...interface{}) {
+func Trace(format string, args ...interface{}) {
 	logger.LogTrace(format, args...)
 }
 
-func LogInfo(format string, args ...interface{}) {
+func Info(format string, args ...interface{}) {
 	logger.LogInfo(format, args...)
 }
 
-func LogWarn(format string, args ...interface{}) {
+func Warn(format string, args ...interface{}) {
 	logger.LogWarn(format, args...)
 }
 
-func LogError(format string, args ...interface{}) {
+func Error(format string, args ...interface{}) {
 	logger.LogError(format, args...)
 }
 
-func LogFatal(format string, args ...interface{}) {
+func Fatal(format string, args ...interface{}) {
 	logger.LogFatal(format, args...)
 }
 
