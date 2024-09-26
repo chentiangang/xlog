@@ -57,7 +57,7 @@ func (c *XFile) syncLog() {
 func (c *XFile) splitLog() {
 	now := time.Now()
 
-	fmt.Println(now.Day(),c.curDay)
+	//fmt.Println(now.Day(),c.curDay)
 	// 如果当前的小时等于创建文件对象时的小时时间，则返回，不进行日志切割
 	if now.Day() == c.curDay {
 		return
