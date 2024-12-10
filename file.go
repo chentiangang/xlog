@@ -15,7 +15,7 @@ type XFile struct {
 
 	logChan chan *LogData
 	wg      *sync.WaitGroup
-	curDay int
+	curDay  int
 }
 
 // 给文件这个对象进行赋值
@@ -48,7 +48,7 @@ func (c *XFile) Init() (err error) {
 
 func (c *XFile) syncLog() {
 	for data := range c.logChan {
-			c.splitLog()
+		c.splitLog()
 		c.writeLog(c.file, data)
 	}
 	c.wg.Done()
@@ -71,8 +71,8 @@ func (c *XFile) splitLog() {
 	c.file.Close()
 
 	// 新生成的文件名
-	newFilename := fmt.Sprintf("%s-%04d-%02d-%02d-%02d", c.filename,
-		now.Year(), now.Month(), now.Day(), now.Hour())
+	newFilename := fmt.Sprintf("%04d-%02d-%02d-%02d-%s",
+		now.Year(), now.Month(), now.Day(), now.Hour(), c.filename)
 
 	// os.Rename 修改文件名
 	os.Rename(c.filename, newFilename)
